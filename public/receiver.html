@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HC03 – Incoming Emergency Requests</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <span class="navbar-brand">🏥 HC03 – Incoming Requests</span>
+    <span id="role-chip" class="role-chip"></span>
+    <a href="index.html">← Home</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- ── Identity selection ─────────────────────────────────────────────── -->
+    <section class="card">
+      <h2>🆔 Select Your Identity</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin-bottom:0">
+          <label for="receiver-type">I am a</label>
+          <select id="receiver-type">
+            <option value="hospital">Hospital</option>
+            <option value="doctor">Doctor</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label for="receiver-id">Select</label>
+          <select id="receiver-id">
+            <option value="">— loading —</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Incoming Requests ──────────────────────────────────────────────── -->
+    <section class="card">
+      <h2 style="display:flex;align-items:center;gap:8px;">
+        📥 Incoming Requests
+        <span class="polling" id="poll-indicator">● Polling every 5s</span>
+      </h2>
+      <div id="incoming-requests">
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>Select your identity above to see incoming requests.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <script src="receiver.js"></script>
+</body>
+</html>
