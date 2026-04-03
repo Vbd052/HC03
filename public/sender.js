@@ -25,6 +25,11 @@ let pollingInterval = null;
   const chip = document.getElementById('role-chip');
   chip.textContent = role === 'nurse' ? '👩‍⚕️ Nurse' : '🚗 Driver';
 
+  // Wire up event listeners (replaces inline onchange / onclick in HTML)
+  document.getElementById('receiver-type').addEventListener('change', loadReceivers);
+  document.getElementById('send-btn').addEventListener('click', sendRequest);
+  document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+
   loadReceivers();
   loadSentRequests();
   pollingInterval = setInterval(loadSentRequests, 5000);
@@ -51,13 +56,27 @@ async function loadReceivers() {
     }
 
     list.innerHTML = data.map(r => `
-      <div class="receiver-card" id="rc-${r.id}"
-           onclick="selectReceiver('${r.id}','${escHtml(r.name)}','${type}','${escHtml(r.phone)}')">
+      <div class="receiver-card"
+           data-id="${escHtml(r.id)}"
+           data-name="${escHtml(r.name)}"
+           data-type="${escHtml(type)}"
+           data-phone="${escHtml(r.phone)}">
         <strong>${escHtml(r.name)}</strong>
         ${r.specialty ? `<span class="badge">${escHtml(r.specialty)}</span>` : ''}
         <small>${escHtml(r.phone)}</small>
       </div>
     `).join('');
+
+    list.querySelectorAll('.receiver-card').forEach(card => {
+      card.addEventListener('click', () => {
+        selectReceiver(
+          card.dataset.id,
+          card.dataset.name,
+          card.dataset.type,
+          card.dataset.phone
+        );
+      });
+    });
   } catch {
     list.innerHTML = '<p class="text-muted">⚠️ Could not load receivers. Is the server running?</p>';
   }
@@ -65,7 +84,8 @@ async function loadReceivers() {
 
 function selectReceiver(id, name, type, phone) {
   document.querySelectorAll('.receiver-card').forEach(el => el.classList.remove('selected'));
-  const card = document.getElementById('rc-' + id);
+  // Find the card that matches the chosen id
+  const card = document.querySelector(`.receiver-card[data-id="${CSS.escape(id)}"]`);
   if (card) card.classList.add('selected');
   selectedReceiver = { id, name, type, phone };
 }

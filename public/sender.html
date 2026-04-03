@@ -86,7 +86,7 @@
       <h2>🏥 Select Receiver</h2>
       <div class="form-group">
         <label for="receiver-type">Send Request To</label>
-        <select id="receiver-type" onchange="loadReceivers()">
+        <select id="receiver-type">
           <option value="hospital">Hospital</option>
           <option value="doctor">Doctor</option>
         </select>
@@ -94,7 +94,7 @@
       <div id="receiver-list" class="receiver-list">
         <p class="text-muted">Loading…</p>
       </div>
-      <button class="btn btn-primary" id="send-btn" onclick="sendRequest()">
+      <button class="btn btn-primary" id="send-btn">
         📤 Send Emergency Request
       </button>
     </section>
@@ -121,7 +121,7 @@
       <h2 id="modal-title">✅ Request Accepted!</h2>
       <p id="modal-message"></p>
       <div id="sms-box" class="sms-box"></div>
-      <button class="btn btn-success" onclick="closeModal()">OK – Got it</button>
+      <button class="btn btn-success" id="modal-close-btn">OK – Got it</button>
     </div>
   </div>
 

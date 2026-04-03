@@ -12,6 +12,17 @@ let receiverInterval = null;
   const chip = document.getElementById('role-chip');
   chip.textContent = role === 'doctor' ? '👨‍⚕️ Doctor' : '🏥 Hospital';
 
+  // Wire up event listeners (replaces inline onchange in HTML)
+  document.getElementById('receiver-type').addEventListener('change', onTypeChange);
+  document.getElementById('receiver-id').addEventListener('change', loadIncomingRequests);
+
+  // Event delegation for Accept/Reject buttons inside #incoming-requests
+  document.getElementById('incoming-requests').addEventListener('click', e => {
+    const btn = e.target.closest('button[data-request-id]');
+    if (!btn) return;
+    updateStatus(btn.dataset.requestId, btn.dataset.action);
+  });
+
   onTypeChange();
 })();
 
@@ -103,10 +114,10 @@ function renderIncoming(requests) {
         </div>
         ${r.status === 'pending' ? `
           <div class="request-actions">
-            <button class="btn btn-success" onclick="updateStatus('${r.id}', 'accepted')">
+            <button class="btn btn-success" data-request-id="${escHtml(r.id)}" data-action="accepted">
               ✅ Accept
             </button>
-            <button class="btn btn-danger" onclick="updateStatus('${r.id}', 'rejected')">
+            <button class="btn btn-danger" data-request-id="${escHtml(r.id)}" data-action="rejected">
               ❌ Reject
             </button>
           </div>
