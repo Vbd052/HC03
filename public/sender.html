@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HC03 – Send Emergency Request</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <span class="navbar-brand">🚨 HC03 – Send Emergency Request</span>
+    <span id="role-chip" class="role-chip"></span>
+    <a href="index.html">← Home</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- ── Sender Info ─────────────────────────────────────────────────────── -->
+    <section class="card">
+      <h2>👤 Your Information</h2>
+      <div class="form-group">
+        <label for="sender-role">Role</label>
+        <select id="sender-role">
+          <option value="driver">Driver</option>
+          <option value="nurse">Nurse</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin-bottom:0">
+          <label for="sender-name">Your Name</label>
+          <input type="text" id="sender-name" placeholder="e.g. John Smith" />
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label for="sender-phone">Your Phone</label>
+          <input type="tel" id="sender-phone" placeholder="e.g. +1-555-0000" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Patient Data ────────────────────────────────────────────────────── -->
+    <section class="card">
+      <h2>🩺 Patient Information</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group" style="margin-bottom:0">
+          <label for="patient-name">Patient Name</label>
+          <input type="text" id="patient-name" placeholder="Full name" />
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label for="patient-age">Age</label>
+          <input type="number" id="patient-age" placeholder="e.g. 45" min="0" max="130" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;">
+        <div class="form-group" style="margin-bottom:0">
+          <label for="emergency-type">Emergency Type</label>
+          <select id="emergency-type">
+            <option value="cardiac">Cardiac</option>
+            <option value="trauma">Trauma</option>
+            <option value="respiratory">Respiratory</option>
+            <option value="neurological">Neurological</option>
+            <option value="obstetric">Obstetric</option>
+            <option value="pediatric">Pediatric</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label for="triage-level">Triage Level</label>
+          <select id="triage-level">
+            <option value="1">Level 1 – Immediate (Critical)</option>
+            <option value="2">Level 2 – Emergent</option>
+            <option value="3">Level 3 – Urgent</option>
+            <option value="4">Level 4 – Less Urgent</option>
+            <option value="5">Level 5 – Non-Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:12px;">
+        <label for="patient-notes">Additional Notes</label>
+        <textarea id="patient-notes" placeholder="Describe symptoms, vitals, current condition…"></textarea>
+      </div>
+    </section>
+
+    <!-- ── Receiver Selection ─────────────────────────────────────────────── -->
+    <section class="card">
+      <h2>🏥 Select Receiver</h2>
+      <div class="form-group">
+        <label for="receiver-type">Send Request To</label>
+        <select id="receiver-type" onchange="loadReceivers()">
+          <option value="hospital">Hospital</option>
+          <option value="doctor">Doctor</option>
+        </select>
+      </div>
+      <div id="receiver-list" class="receiver-list">
+        <p class="text-muted">Loading…</p>
+      </div>
+      <button class="btn btn-primary" id="send-btn" onclick="sendRequest()">
+        📤 Send Emergency Request
+      </button>
+    </section>
+
+    <!-- ── Sent Requests ──────────────────────────────────────────────────── -->
+    <section class="card">
+      <h2 style="display:flex;align-items:center;gap:8px;">
+        📋 My Sent Requests
+        <span class="polling" id="poll-indicator">● Polling every 5s</span>
+      </h2>
+      <div id="sent-requests">
+        <div class="empty-state">
+          <div class="empty-icon">📭</div>
+          <p>No requests sent yet.</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <!-- ── Notification Modal ─────────────────────────────────────────────────── -->
+  <div id="notification-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <h2 id="modal-title">✅ Request Accepted!</h2>
+      <p id="modal-message"></p>
+      <div id="sms-box" class="sms-box"></div>
+      <button class="btn btn-success" onclick="closeModal()">OK – Got it</button>
+    </div>
+  </div>
+
+  <script src="sender.js"></script>
+</body>
+</html>
